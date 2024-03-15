@@ -1,0 +1,72 @@
+*******************************************************
+STEPS FOR REGRESSION:
+1. importing libraries/modules
+2. uploading dataset
+3. assigning dataset to X(features) and y(labels)
+4. breaking dataset in to test and train data
+5. training dataset
+6. testing/prediction(r-square/slope)
+7. slope
+
+*******************************************************
+
+# Simple Linear Regression
+
+# Importing the libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# Importing the dataset
+dataset = pd.read_csv('Salary_Data.csv')
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, 1].values # yaha column 1 include hoga bcoz humne range nh di value di hai
+
+# Splitting the dataset into the Training set and Test set
+from sklearn.model_selection import train_test_split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 1/3, random_state = 0)
+
+#test-size humne define krdia iski jagah hum training size bh define krskty wo humpe depend krta phr ye dataset ko 
+#break krdega us hisab setrandom state 0 hai iski jagah koi bh number likh skty 42 ya 100 ya 75 phr wo bs us hisab se
+#values ko pick krega randomly
+
+# Fitting Simple Linear Regression to the Training set
+from sklearn.linear_model import LinearRegression
+regressor = LinearRegression() # instance bana dia
+regressor.fit(X_train , y_train) #fit is used for training model,x is feature,y is label here.
+
+# Predicting the Test set results
+y_pred = regressor.predict(X_test) # unseen dataset pass krdia prediction k liye
+
+# x ki values humne pass krdi yaani k features pass krdye or wo label btayega yaani y ki values btayega,ab y-test or y-predict ko hum match krengy tak k accuracy
+# dekh skein
+
+y_pred = regressor.predict([[7.5]])
+print(y_pred)
+
+#maqsad number of years pass krun wo salary btaye,jese yaha mene btaya 7.5 or wo mujhe iske corresponding salary btayega prediction base pr
+
+# Visualising the Training set results
+plt.scatter(X_train, y_train, color = 'red')
+plt.plot(X_train, regressor.predict(X_train), color = 'blue')
+plt.title('Salary vs Experience (Training set)')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.show()
+
+# Visualising the Test set results
+plt.scatter(X_test, y_test, color = 'red')
+plt.plot(X_train, regressor.predict(X_train), color = 'blue')
+plt.title('Salary vs Experience (Test set)')
+plt.xlabel('Years of Experience')
+plt.ylabel('Salary')
+plt.show()
+
+
+# rsquare ki vale jitni closer to 1 hogi utni achi accuracy hogi system ki prediction ki
+# FORMULA----> R-accuracy= 1 - error
+
+R_square = regressor.score(X_train, y_train)
+print(R_square) ---> 0.9381%
+
+

@@ -1,0 +1,43 @@
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LinearRegression
+
+dataset = pd.read_csv("students.csv")
+X = dataset.iloc[:, :-1].values
+y = dataset.iloc[:, 1].values
+
+Q1 = np.percentile(y, 20)
+Q3 = np.percentile(y, 60)
+IQR = Q3 - Q1
+lower_bound = Q1 - 1.5 * IQR
+upper_bound = Q3 + 1.5 * IQR
+
+outlier_indices = np.where((y < lower_bound) | (y > upper_bound))
+X_cleaned = np.delete(X, outlier_indices, axis=0)
+y_cleaned = np.delete(y, outlier_indices)
+
+X_train, X_test, y_train, y_test = train_test_split(X_cleaned, y_cleaned, test_size=0.4, random_state=0)
+
+model = LinearRegression()
+model.fit(X_train, y_train)
+
+y_pred = model.predict(X_test)
+
+plt.scatter(X_train, y_train, color="red")
+plt.plot(X_train, model.predict(X_train), color="yellow")
+plt.show()
+
+
+slope = model.coef_[0]
+intercept = model.intercept_
+
+print("Slope (Coefficient):", slope)
+print("Y-Intercept:", intercept)
+
+rsquare = model.score(X_train, y_train)
+mse = mean_squared_error(y_test, y_pred)
+
+print("R-squared for Linear Regression:", rsquare)
+print("Mean Squared Error for Linear Regression:", mse)

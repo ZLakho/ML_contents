@@ -1,0 +1,3 @@
+decision tree regression basically dataset ko classify krdeta ha classes mein,ye trees bana k conditions p kaam krta isiliye decison tree kaha jata issy.
+regression m line plot krty hain
+classification mein line split krty hain or classes bana lety hain
